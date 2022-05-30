@@ -96,7 +96,14 @@ pub const VoidParser = struct {
 
                     // Maps advertize the number of field-value pairs,
                     // so we double the amount in that case.
-                    if (tag == '%') size *= 2;
+                    if (tag == '%') {
+                        if (itemsToConsume != 0) {
+                            // This is a nested map, so we just consumed one item
+                            size = size * 2 - 1;
+                        } else {
+                            size *= 2;
+                        }
+                    }
                     itemsToConsume += size;
                 },
             }
